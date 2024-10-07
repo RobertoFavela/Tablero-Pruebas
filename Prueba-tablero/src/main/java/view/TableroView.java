@@ -35,10 +35,10 @@ public class TableroView extends JFrame {
     private Array array;
     private Jugador jugador;
 
-    public TableroView(Array array, Jugador jugador) {
+    public TableroView(Array arreglo, Jugador player) {
         this.setSize(1200, 850);
-        this.array = array;
-        this.jugador = jugador;
+        this.array = arreglo;
+        this.jugador = player;
         setTitle("Tablero de Dominó");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -159,10 +159,10 @@ public class TableroView extends JFrame {
         private JLabel fichaLabel;
         private JPanel fichasJugadorPanel;
 
-        public FichaTransferHandler(Ficha ficha, JLabel fichaLabel, JPanel fichasJugadorPanel) {
-            this.ficha = ficha;
-            this.fichaLabel = fichaLabel;
-            this.fichasJugadorPanel = fichasJugadorPanel;
+        public FichaTransferHandler(Ficha objetoFicha, JLabel objetofichaLabel, JPanel objetofichasJugadorPanel) {
+            this.ficha = objetoFicha;
+            this.fichaLabel = objetofichaLabel;
+            this.fichasJugadorPanel = objetofichasJugadorPanel;
         }
 
         @Override
