@@ -55,6 +55,10 @@ public class Ficha implements Serializable {
         this.rutaImagen = rutaImagen;
     }
 
+    public boolean esMula() {
+        return this.getLado1() == this.getLado2();
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
