@@ -18,7 +18,7 @@ public class Array {
     }
 
     public boolean estaVacio(int fila, int columna) {
-        return tablero[fila][columna] == 0; 
+        return tablero[fila][columna] == -1; 
     }
 
         public boolean colocarFichaHorizontal(Ficha ficha, int fila, int columna) {
@@ -46,7 +46,7 @@ public class Array {
     public void reiniciarTablero() {
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[i].length; j++) {
-                tablero[i][j] = 0; 
+                tablero[i][j] = -1; 
             }
         }
     }
