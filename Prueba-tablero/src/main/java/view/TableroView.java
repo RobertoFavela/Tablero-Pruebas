@@ -34,10 +34,10 @@ import java.util.List;
 
 public class TableroView extends JFrame {
 
-  private Array array;
-    private List<Jugador> jugadores; 
- private Ficha fichaSeleccionada = null; 
- 
+    private Array array;
+    private List<Jugador> jugadores;
+    private Ficha fichaSeleccionada = null;
+
     public TableroView(Array array, List<Jugador> jugadores) {
         this.setSize(1200, 850);
         this.array = array;
@@ -46,14 +46,11 @@ public class TableroView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-       
         TableroPanel tableroPanel = new TableroPanel(array);
         add(tableroPanel, BorderLayout.CENTER);
 
         JPanel fichasJugadorPanel = new JPanel();
         fichasJugadorPanel.setLayout(new FlowLayout());
-
-      
 
         add(fichasJugadorPanel, BorderLayout.SOUTH);
         pack();
@@ -62,39 +59,41 @@ public class TableroView extends JFrame {
 
         ControlJuego controlJuego = new ControlJuego(jugadores, array);
 //        controlJuego.colocarMulaMasAlta();
-        
+
         for (Jugador jugador : jugadores) {
             for (Ficha ficha : jugador.getFichas()) {
-                JLabel fichaLabel = new JLabel(new ImageIcon(ficha.getRutaImagen()));
-               
+                
+                String rutaImagen = String.format("C:\\Users\\favel\\OneDrive\\Documentos\\ITSON\\Tablero-Pruebas\\Prueba-tablero\\src\\img\\ficha%d_%d.png", ficha.getLado1(), ficha.getLado2());
+                ImageIcon icono = new ImageIcon(rutaImagen);
+
+                JLabel fichaLabel = new JLabel(icono);
                 fichaLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                       
-                          fichaSeleccionada = ficha;
-                           System.out.println(fichaSeleccionada);
-                     array.colocarFichaHorizontal(fichaSeleccionada);
-                      tableroPanel.repaint();
+                        fichaSeleccionada = ficha;
+                        System.out.println(fichaSeleccionada);
+                        array.colocarFichaHorizontal(fichaSeleccionada);
+                        tableroPanel.repaint();
                     }
                 });
 
                 fichasJugadorPanel.add(fichaLabel);
             }
         }
+
         tableroPanel.repaint();
-       
-            
-          }
-   
-     // Método actualizado para buscar la ficha en el jugador específico
-            private Ficha encontrarFichaPorIcono(ImageIcon icon, Jugador jugador) {
-                for (Ficha ficha : jugador.getFichas()) {
-                    if (new ImageIcon(ficha.getRutaImagen()).getImage().equals(icon.getImage())) {
-                        return ficha;
-                    }
-                }
-                return null;
-            }
+
+    }
+
+    // Método actualizado para buscar la ficha en el jugador específico
+//    private Ficha encontrarFichaPorIcono(ImageIcon icon, Jugador jugador) {
+//        for (Ficha ficha : jugador.getFichas()) {
+//            if (new ImageIcon(ficha.getRutaImagen()).getImage().equals(icon.getImage())) {
+//                return ficha;
+//            }
+//        }
+//        return null;
+//    }
 
     public class TableroPanel extends JPanel {
 
@@ -146,10 +145,12 @@ public class TableroView extends JFrame {
                     return DataFlavor.imageFlavor.equals(flavor);
                 }
 
+                //Esto ya ni se va a usar ni para que arreglarlo
                 @Override
                 public Object getTransferData(DataFlavor flavor) {
                     if (DataFlavor.imageFlavor.equals(flavor)) {
-                        return new ImageIcon(ficha.getRutaImagen());
+                        return false;
+                        //return new ImageIcon(ficha.getRutaImagen());
                     }
                     return null;
                 }
@@ -162,4 +163,3 @@ public class TableroView extends JFrame {
         }
     }
 }
-

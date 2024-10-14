@@ -16,7 +16,7 @@ public class Array {
     private int extremo2Columna, extremo2Fila;
 
     public Array() {
-        tablero = new int[17][21];
+        tablero = new int[10][10];
         reiniciarTablero();
         tablero[4][4] = 6;
         extremoIzquierdo = 6;
