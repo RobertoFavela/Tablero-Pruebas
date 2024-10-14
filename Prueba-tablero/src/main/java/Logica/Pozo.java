@@ -26,19 +26,19 @@ public class Pozo {
         this.numeroFichasIniciales = numeroFichasIniciales;
         crearFichasPozo();
     }
-
-    /**
-     * Metodo que agrega al pozo la lista de 28 fichas 
-     */
-    private void crearFichasPozo() {
-        for (int i = 0; i <= 6; i++) {
-            for (int j = i; j <= 6; j++) {
-                String rutaImagen = String.format("C:\\Users\\favel\\OneDrive\\Documents\\ITSON\\Tablero-Pruebas\\Prueba-tablero\\src\\img\\ficha%d_%d", i, j);
-                Ficha ficha = new Ficha(i, j, rutaImagen);
-                fichas.add(ficha);
-            }
+/**
+ * Método que agrega al pozo la lista de 28 fichas
+ */
+private void crearFichasPozo() {
+    for (int i = 0; i <= 6; i++) {
+        for (int j = i; j <= 6; j++) {
+            String rutaImagen = String.format("C:\\Users\\favel\\OneDrive\\Documentos\\ITSON\\Tablero-Pruebas\\Prueba-tablero\\src\\img\\ficha%d_%d.png", i, j);
+            Ficha ficha = new Ficha(i, j);
+            System.out.println(ficha);
+            fichas.add(ficha);
         }
     }
+}
 
     /**
      * MMetodo que retorna una ficha al azar y elimina la ficha del pozo
@@ -53,8 +53,26 @@ public class Pozo {
 
         if (!pozoVacío()) {
             posicion = random.nextInt(0, fichas.size());
-
+            System.out.println(posicion);
             ficha = fichas.get(posicion);
+            System.out.println(ficha);
+            fichas.remove(posicion);
+        }
+        
+        return ficha;
+    }
+public Ficha sacarFichaMula() {
+    
+
+        int posicion;
+
+        Ficha ficha = null;
+
+        if (!pozoVacío()) {
+            posicion =27;
+            System.out.println(posicion);
+            ficha = fichas.get(posicion);
+            System.out.println(ficha);
             fichas.remove(posicion);
         }
         
@@ -67,7 +85,7 @@ public class Pozo {
      */
     public List<Ficha> repartirFichas(){
         List<Ficha> fichasARepartir = new ArrayList<>();
-        
+        fichasARepartir.add(sacarFichaMula());
         for (int i = 0; i < numeroFichasIniciales; i++) {
             fichasARepartir.add(sacarFicha());
         }

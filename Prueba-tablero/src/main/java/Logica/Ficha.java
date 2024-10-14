@@ -15,15 +15,8 @@ public class Ficha implements Serializable {
 
     private Integer lado1;
     private Integer lado2;
-    private String rutaImagen;
 
     public Ficha() {
-    }
-
-    public Ficha(Integer lado1, Integer lado2, String rutaImagen) {
-        this.lado1 = lado1;
-        this.lado2 = lado2;
-        this.rutaImagen = rutaImagen;
     }
 
     public Ficha(Integer lado1, Integer lado2) {
@@ -47,20 +40,15 @@ public class Ficha implements Serializable {
         this.lado2 = lado2;
     }
 
-    public String getRutaImagen() {
-        return rutaImagen;
+    public boolean esMula() {
+        return this.getLado1() == this.getLado2();
     }
-
-    public void setRutaImagen(String rutaImagen) {
-        this.rutaImagen = rutaImagen;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 13 * hash + Objects.hashCode(this.lado1);
         hash = 13 * hash + Objects.hashCode(this.lado2);
-        hash = 13 * hash + Objects.hashCode(this.rutaImagen);
         return hash;
     }
 
@@ -76,9 +64,6 @@ public class Ficha implements Serializable {
             return false;
         }
         final Ficha other = (Ficha) obj;
-        if (!Objects.equals(this.rutaImagen, other.rutaImagen)) {
-            return false;
-        }
         if (!Objects.equals(this.lado1, other.lado1)) {
             return false;
         }
@@ -91,7 +76,6 @@ public class Ficha implements Serializable {
         sb.append("Ficha{");
         sb.append("lado1=").append(lado1);
         sb.append(", lado2=").append(lado2);
-        sb.append(", rutaImagen='").append(rutaImagen).append('\'');
         sb.append('}');
         return sb.toString();
     }
