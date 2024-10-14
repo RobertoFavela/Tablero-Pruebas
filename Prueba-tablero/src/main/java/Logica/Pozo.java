@@ -32,7 +32,6 @@ public class Pozo {
 private void crearFichasPozo() {
     for (int i = 0; i <= 6; i++) {
         for (int j = i; j <= 6; j++) {
-            String rutaImagen = String.format("C:\\Users\\favel\\OneDrive\\Documentos\\ITSON\\Tablero-Pruebas\\Prueba-tablero\\src\\img\\ficha%d_%d.png", i, j);
             Ficha ficha = new Ficha(i, j);
             System.out.println(ficha);
             fichas.add(ficha);

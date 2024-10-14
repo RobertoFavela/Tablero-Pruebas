@@ -32,25 +32,6 @@ public class Array {
     }
 
     public boolean colocarFichaHorizontal(Ficha ficha) {
-//        if (ficha.esMula()) {
-//            if (estaVacio(fila, columna)) {
-//                tablero[fila][columna] = ficha.getLado1();
-//                return true;
-//            }
-//        } else {
-//            System.out.println("NO ES MULA");
-//            if (estaVacio(fila, columna) && (columna + 1 < tablero[fila].length) && estaVacio(fila, columna + 1)) {
-//                System.out.println("hola");
-//                tablero[fila][columna] = ficha.getLado1();
-//                tablero[fila][columna + 1] = ficha.getLado2();
-//                return true;
-//            }else{
-//                System.out.println("paso para aca");
-//                 tablero[fila][columna] = ficha.getLado1();
-//                tablero[fila][columna-1] = ficha.getLado2();
-//                return true;
-//            }
-//        }
         if (ficha.getLado1() == extremoIzquierdo) {
             System.out.println("entraste al primer if");
             tablero[extremo1Fila][extremo1Columna - 1] = ficha.getLado1();
@@ -88,23 +69,6 @@ public class Array {
         return false;
     }
 
-//    public boolean colocarFichaVertical(Ficha ficha, int fila, int columna) {
-//        if (ficha.esMula()) {
-//
-//            if (estaVacio(fila, columna)) {
-//                tablero[fila][columna] = ficha.getLado1();
-//                return true;
-//            }
-//        } else {
-//
-//            if (estaVacio(fila, columna) && estaVacio(fila + 1, columna)) {
-//                tablero[fila][columna] = ficha.getLado1();
-//                tablero[fila + 1][columna] = ficha.getLado2();
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
     public int obtenerFichaEnPosicion(int fila, int columna) {
         return tablero[fila][columna];
     }
@@ -123,14 +87,6 @@ public class Array {
 
     public int[][] obtenerTablero() {
         return tablero;
-    }
-
-    public boolean validarJuntarFichas(Ficha ficha, int x, int y) {
-        if (estaVacio(x, y)) {
-
-            return false;
-        }
-        return false;
     }
 
     public int getExtremo1() {
