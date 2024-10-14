@@ -29,8 +29,10 @@ import Logica.Array;
 import Logica.ControlJuego;
 import Logica.Ficha;
 import Logica.Jugador;
+import java.awt.Color;
 import java.awt.Component;
 import java.util.List;
+import javax.swing.JButton;
 
 public class TableroView extends JFrame {
 
@@ -62,18 +64,37 @@ public class TableroView extends JFrame {
 
         for (Jugador jugador : jugadores) {
             for (Ficha ficha : jugador.getFichas()) {
-                
-                String rutaImagen = String.format("C:\\Users\\favel\\Documents\\Tablero-Pruebas\\Prueba-tablero\\src\\img\\ficha%d_%d.png", ficha.getLado1(), ficha.getLado2());
+
+                String rutaImagen = String.format(
+                        "C:\\Users\\favel\\Documents\\Tablero-Pruebas\\Prueba-tablero\\src\\img\\ficha%d_%d.png",
+                        ficha.getLado1(), ficha.getLado2()
+                );
                 ImageIcon icono = new ImageIcon(rutaImagen);
 
-                JLabel fichaLabel = new JLabel(icono);
+                JButton fichaLabel = new JButton(icono);
+                fichaLabel.setContentAreaFilled(false);
+                fichaLabel.setBorderPainted(false);
+
                 fichaLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         fichaSeleccionada = ficha;
-                        System.out.println(fichaSeleccionada);
-                        array.colocarFichaHorizontal(fichaSeleccionada);
-                        tableroPanel.repaint();
+
+                        boolean colocada = array.colocarFichaHorizontal(fichaSeleccionada);
+
+                        if (colocada) {
+                            jugador.eliminarFicha(fichaSeleccionada);
+
+                            fichasJugadorPanel.remove(fichaLabel);
+
+                            fichasJugadorPanel.revalidate();
+                            fichasJugadorPanel.repaint();
+                            tableroPanel.repaint();
+
+                            System.out.println("Ficha colocada: " + fichaSeleccionada);
+                        } else {
+                            System.out.println("No se pudo colocar la ficha.");
+                        }
                     }
                 });
 
@@ -84,16 +105,6 @@ public class TableroView extends JFrame {
         tableroPanel.repaint();
 
     }
-
-    // Método actualizado para buscar la ficha en el jugador específico
-//    private Ficha encontrarFichaPorIcono(ImageIcon icon, Jugador jugador) {
-//        for (Ficha ficha : jugador.getFichas()) {
-//            if (new ImageIcon(ficha.getRutaImagen()).getImage().equals(icon.getImage())) {
-//                return ficha;
-//            }
-//        }
-//        return null;
-//    }
 
     public class TableroPanel extends JPanel {
 
@@ -111,55 +122,20 @@ public class TableroView extends JFrame {
 
             for (int i = 0; i < tablero.length; i++) {
                 for (int j = 0; j < tablero[i].length; j++) {
+
+                    if (tablero[i][j] != -1) {
+                        g.setColor(Color.GRAY);
+                        g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                    }
+
+                    g.setColor(Color.BLACK);
                     g.drawRect(j * cellSize, i * cellSize, cellSize, cellSize);
-                    g.drawString(String.valueOf(tablero[i][j]), j * cellSize + cellSize / 4, i * cellSize + cellSize / 2);
+
+                    g.drawString(String.valueOf(tablero[i][j]),
+                            j * cellSize + cellSize / 4,
+                            i * cellSize + cellSize / 2);
                 }
             }
-        }
-    }
-
-    class FichaTransferHandler extends TransferHandler {
-
-        private Ficha ficha;
-        private JLabel fichaLabel;
-        private JPanel fichasJugadorPanel;
-        private Jugador jugador; // Guardar referencia al jugador
-
-        public FichaTransferHandler(Ficha ficha, JLabel fichaLabel, JPanel fichasJugadorPanel, Jugador jugador) {
-            this.ficha = ficha;
-            this.fichaLabel = fichaLabel;
-            this.fichasJugadorPanel = fichasJugadorPanel;
-            this.jugador = jugador; // Inicializar el jugador
-        }
-
-        @Override
-        protected Transferable createTransferable(JComponent c) {
-            return new Transferable() {
-                @Override
-                public DataFlavor[] getTransferDataFlavors() {
-                    return new DataFlavor[]{DataFlavor.imageFlavor};
-                }
-
-                @Override
-                public boolean isDataFlavorSupported(DataFlavor flavor) {
-                    return DataFlavor.imageFlavor.equals(flavor);
-                }
-
-                //Esto ya ni se va a usar ni para que arreglarlo
-                @Override
-                public Object getTransferData(DataFlavor flavor) {
-                    if (DataFlavor.imageFlavor.equals(flavor)) {
-                        return false;
-                        //return new ImageIcon(ficha.getRutaImagen());
-                    }
-                    return null;
-                }
-            };
-        }
-
-        @Override
-        public int getSourceActions(JComponent c) {
-            return MOVE;
         }
     }
 }

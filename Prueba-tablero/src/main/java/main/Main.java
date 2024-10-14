@@ -23,8 +23,6 @@ public class Main {
         Jugadores.add(jugador);
         Array array = new Array(); 
 
-        System.out.println("Número de fichas repartidas: " + jugador.getFichas().size());
-
         TableroView view = new TableroView(array, Jugadores); 
         view.setVisible(true); 
     }

@@ -12,6 +12,7 @@ import java.util.List;
  * @author favel
  */
 public class Jugador {
+
     private String nombre;
     private List<Ficha> fichas; // Lista para guardar las fichas del jugador
 
@@ -39,6 +40,16 @@ public class Jugador {
     // Método para agregar una ficha a la lista del jugador
     public void agregarFicha(Ficha ficha) {
         this.fichas.add(ficha);
+    }
+
+    // Método para eliminar una ficha de la lista del jugador
+    public boolean eliminarFicha(Ficha ficha) {
+        if (this.fichas.contains(ficha)) {
+            this.fichas.remove(ficha);
+            return true;
+        } else {
+            return false; 
+        }
     }
 
     // Método para agregar varias fichas a la lista del jugador

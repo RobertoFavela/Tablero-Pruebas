@@ -3,8 +3,6 @@ view\TableroView.class
 Logica\Array.class
 Logica\Jugador.class
 Logica\Pozo.class
-view\TableroView$FichaTransferHandler$1.class
-view\TableroView$FichaTransferHandler.class
 view\TableroView$TableroPanel.class
 Logica\Ficha.class
 main\Main.class
