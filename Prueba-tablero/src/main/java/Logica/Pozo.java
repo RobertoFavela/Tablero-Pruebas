@@ -61,6 +61,23 @@ private void crearFichasPozo() {
         
         return ficha;
     }
+public Ficha sacarFichaMula() {
+    
+
+        int posicion;
+
+        Ficha ficha = null;
+
+        if (!pozoVacío()) {
+            posicion =27;
+            System.out.println(posicion);
+            ficha = fichas.get(posicion);
+            System.out.println(ficha);
+            fichas.remove(posicion);
+        }
+        
+        return ficha;
+    }
 
     /**
      * Metodo que regresa una lista de fichas al azar del pozo
@@ -68,7 +85,7 @@ private void crearFichasPozo() {
      */
     public List<Ficha> repartirFichas(){
         List<Ficha> fichasARepartir = new ArrayList<>();
-        
+        fichasARepartir.add(sacarFichaMula());
         for (int i = 0; i < numeroFichasIniciales; i++) {
             fichasARepartir.add(sacarFicha());
         }
