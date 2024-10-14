@@ -13,7 +13,7 @@ import view.TableroView;
 
 public class Main {
     public static void main(String[] args) {
-        Pozo pozo = new Pozo(7); 
+        Pozo pozo = new Pozo(14); 
 
         List<Jugador> Jugadores = new ArrayList<>();
         Jugador jugador = new Jugador("Favela");

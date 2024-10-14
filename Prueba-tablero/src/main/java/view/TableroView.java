@@ -118,7 +118,7 @@ public class TableroView extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            int cellSize = 60;
+            int cellSize = 30;
 
             for (int i = 0; i < tablero.length; i++) {
                 for (int j = 0; j < tablero[i].length; j++) {

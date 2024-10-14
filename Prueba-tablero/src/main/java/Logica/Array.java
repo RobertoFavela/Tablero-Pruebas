@@ -16,15 +16,15 @@ public class Array {
     private int extremo2Columna, extremo2Fila;
 
     public Array() {
-        tablero = new int[10][10];
+        tablero = new int[17][31];
         reiniciarTablero();
-        tablero[4][4] = 6;
+        tablero[8][15] = 6;
         extremoIzquierdo = 6;
         extremoDerecha = 6;
-        extremo1Columna = 4;
-        extremo1Fila = 4;
-        extremo2Columna = 4;
-        extremo2Fila = 4;
+        extremo1Columna = 15;
+        extremo1Fila = 8;
+        extremo2Columna = 15;
+        extremo2Fila = 8;
     }
 
     public boolean estaVacio(int fila, int columna) {
@@ -32,40 +32,86 @@ public class Array {
     }
 
     public boolean colocarFichaHorizontal(Ficha ficha) {
-        if (ficha.getLado1() == extremoIzquierdo) {
-            System.out.println("entraste al primer if");
-            tablero[extremo1Fila][extremo1Columna - 1] = ficha.getLado1();
-            tablero[extremo1Fila][extremo1Columna - 2] = ficha.getLado2();
+        int filas = tablero.length;
+        int columnas = tablero[0].length;
 
-            extremoIzquierdo = ficha.getLado2();
-            extremo1Columna -= 2;
-            return true;
-        }
-        if (ficha.getLado1() == extremoDerecha) {
-            System.out.println("entraste al segundo if");
-            tablero[extremo2Fila][extremo2Columna + 1] = ficha.getLado1();
-            tablero[extremo2Fila][extremo2Columna + 2] = ficha.getLado2();
-            extremoDerecha = ficha.getLado2();
-            extremo2Columna += 2;
-            return true;
-        }
-        if (ficha.getLado2() == extremoIzquierdo) {
-            System.out.println("entraste al tercer if");
+        // Verificar y colocar hacia la izquierda del extremo izquierdo
+        if (ficha.getLado2() == extremoIzquierdo && extremo1Columna - 3 >= 0) {
+            System.out.println("Colocando hacia la izquierda del extremo izquierdo");
             tablero[extremo1Fila][extremo1Columna - 1] = ficha.getLado2();
             tablero[extremo1Fila][extremo1Columna - 2] = ficha.getLado1();
 
-            extremoIzquierdo = ficha.getLado1();
+            extremoIzquierdo = ficha.getLado1();  // Actualizar extremo
             extremo1Columna -= 2;
             return true;
         }
-        if (ficha.getLado2() == extremoDerecha) {
-            System.out.println("entraste al cuarto if");
-            tablero[extremo2Fila][extremo2Columna + 1] = ficha.getLado2();
-            tablero[extremo2Fila][extremo2Columna + 2] = ficha.getLado1();
-            extremoDerecha = ficha.getLado1();
+
+        // Verificar y colocar hacia la derecha del extremo derecho
+        if (ficha.getLado1() == extremoDerecha && extremo2Columna + 3 < columnas) {
+            System.out.println("Colocando hacia la derecha del extremo derecho");
+            tablero[extremo2Fila][extremo2Columna + 1] = ficha.getLado1();
+            tablero[extremo2Fila][extremo2Columna + 2] = ficha.getLado2();
+
+            extremoDerecha = ficha.getLado2();  // Actualizar extremo
             extremo2Columna += 2;
             return true;
         }
+
+        // Verificar y colocar la ficha invertida hacia la izquierda del extremo izquierdo
+        if (ficha.getLado1() == extremoIzquierdo && extremo1Columna - 3 >= 0) {
+            System.out.println("Colocando hacia la izquierda (invertido)");
+            tablero[extremo1Fila][extremo1Columna - 1] = ficha.getLado1();
+            tablero[extremo1Fila][extremo1Columna - 2] = ficha.getLado2();
+
+            extremoIzquierdo = ficha.getLado2();  // Actualizar extremo
+            extremo1Columna -= 2;
+            return true;
+        }
+
+        // Verificar y colocar la ficha invertida hacia la derecha del extremo derecho
+        if (ficha.getLado2() == extremoDerecha && extremo2Columna + 3 < columnas) {
+            System.out.println("Colocando hacia la derecha (invertido)");
+            tablero[extremo2Fila][extremo2Columna + 1] = ficha.getLado2();
+            tablero[extremo2Fila][extremo2Columna + 2] = ficha.getLado1();
+
+            extremoDerecha = ficha.getLado1();  // Actualizar extremo
+            extremo2Columna += 2;
+            return true;
+        }
+
+        // Intentar colocación vertical hacia arriba en el extremo izquierdo
+        if (ficha.getLado2() == extremoIzquierdo && extremo1Fila - 3 >= 0) {
+            System.out.println("Colocando verticalmente hacia arriba en el extremo izquierdo");
+            tablero[extremo1Fila - 1][extremo1Columna] = ficha.getLado2();
+            tablero[extremo1Fila - 2][extremo1Columna] = ficha.getLado1();
+
+            extremoIzquierdo = ficha.getLado1();  // Actualizar extremo
+            extremo1Fila -= 2;
+            return true;
+        }
+
+        // Intentar colocación vertical hacia arriba en el extremo derecho
+        if (ficha.getLado1() == extremoDerecha && extremo2Fila - 3 >= 0) {
+            System.out.println("Colocando verticalmente hacia arriba en el extremo derecho");
+            tablero[extremo2Fila - 1][extremo2Columna] = ficha.getLado1();
+            tablero[extremo2Fila - 2][extremo2Columna] = ficha.getLado2();
+
+            extremoDerecha = ficha.getLado2();  // Actualizar extremo
+            extremo2Fila -= 2;
+            return true;
+        }
+
+        if (ficha.getLado2() == extremoIzquierdo && extremo1Columna - 3 >= 0) {
+            System.out.println("Colocando verticalmente hacia arriba en el extremo izquierdo");
+            tablero[extremo1Fila][extremo1Columna + 1] = ficha.getLado2();
+            tablero[extremo1Fila][extremo1Columna + 2] = ficha.getLado1();
+
+            extremoIzquierdo = ficha.getLado1();  // Actualizar extremo
+            extremo1Fila += 2;
+            return true;
+        }
+
+        System.out.println("No se pudo colocar la ficha.");
         return false;
     }
 
