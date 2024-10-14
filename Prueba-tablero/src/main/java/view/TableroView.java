@@ -5,6 +5,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -18,7 +19,6 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -26,60 +26,75 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.TransferHandler;
 import Logica.Array;
+import Logica.ControlJuego;
 import Logica.Ficha;
 import Logica.Jugador;
-import java.awt.Component;
+import java.util.List;
 
 public class TableroView extends JFrame {
 
     private Array array;
-    private Jugador jugador;
+    private List<Jugador> jugadores; // Cambiado para almacenar la lista de jugadores
 
-    public TableroView(Array array, Jugador jugador) {
+    public TableroView(Array array, List<Jugador> jugadores) {
         this.setSize(1200, 850);
         this.array = array;
-        this.jugador = jugador;
+        this.jugadores = jugadores; // Inicializar la lista de jugadores
         setTitle("Tablero de Dominó");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        // Crear y agregar el panel del tablero
         TableroPanel tableroPanel = new TableroPanel(array);
         add(tableroPanel, BorderLayout.CENTER);
 
+        // Crear y agregar el panel de fichas del jugador
         JPanel fichasJugadorPanel = new JPanel();
         fichasJugadorPanel.setLayout(new FlowLayout());
 
-        for (Ficha ficha : jugador.getFichas()) {
-            JLabel fichaLabel = new JLabel(new ImageIcon(ficha.getRutaImagen()));
-            fichaLabel.setTransferHandler(new FichaTransferHandler(ficha, fichaLabel, fichasJugadorPanel)); 
-            fichaLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    JComponent comp = (JComponent) e.getSource();
-                    TransferHandler handler = comp.getTransferHandler();
-                    handler.exportAsDrag(comp, e, TransferHandler.MOVE);
-                }
-            });
-            fichasJugadorPanel.add(fichaLabel); 
+        // Inicializar fichas de todos los jugadores
+        for (Jugador jugador : jugadores) {
+            for (Ficha ficha : jugador.getFichas()) {
+                JLabel fichaLabel = new JLabel(new ImageIcon(ficha.getRutaImagen()));
+                fichaLabel.setTransferHandler(new FichaTransferHandler(ficha, fichaLabel, fichasJugadorPanel, jugador));
+                fichaLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        JComponent comp = (JComponent) e.getSource();
+                        TransferHandler handler = comp.getTransferHandler();
+                        handler.exportAsDrag(comp, e, TransferHandler.MOVE);
+                    }
+                });
+                fichasJugadorPanel.add(fichaLabel);
+            }
         }
 
         add(fichasJugadorPanel, BorderLayout.SOUTH);
         pack();
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
         setVisible(true);
 
+        // Llamar al método para colocar la mula más alta en el centro
+        ControlJuego controlJuego = new ControlJuego(jugadores, array);
+        controlJuego.colocarMulaMasAlta();
+
+        tableroPanel.repaint();
         new DropTarget(tableroPanel, new DropTargetListener() {
             @Override
-            public void dragEnter(DropTargetDragEvent dtde) {}
+            public void dragEnter(DropTargetDragEvent dtde) {
+            }
 
             @Override
-            public void dragOver(DropTargetDragEvent dtde) {}
+            public void dragOver(DropTargetDragEvent dtde) {
+            }
 
             @Override
-            public void dropActionChanged(DropTargetDragEvent dtde) {}
+            public void dropActionChanged(DropTargetDragEvent dtde) {
+            }
 
             @Override
-            public void dragExit(DropTargetEvent dte) {}
+            public void dragExit(DropTargetEvent dte) {
+            }
 
             @Override
             public void drop(DropTargetDropEvent dtde) {
@@ -89,28 +104,32 @@ public class TableroView extends JFrame {
                     ImageIcon icon = (ImageIcon) transferable.getTransferData(DataFlavor.imageFlavor);
 
                     Point dropPoint = dtde.getLocation();
-                    int fila = dropPoint.y / 40; 
+                    int fila = dropPoint.y / 40;
                     int columna = dropPoint.x / 40;
 
-                    if (array.estaVacio(fila, columna) && array.estaVacio(fila, columna + 1)) {
-                        Ficha fichaColocada = encontrarFichaPorIcono(icon);
-                        if (fichaColocada != null) {
-                            array.colocarFichaHorizontal(fichaColocada, fila, columna);
+                    // Aquí se busca en todos los jugadores
+                    for (Jugador jugador : jugadores) {
+                        if (array.estaVacio(fila, columna) && array.estaVacio(fila, columna + 1)) {
+                            Ficha fichaColocada = encontrarFichaPorIcono(icon, jugador);
+                            if (fichaColocada != null) {
+                                array.colocarFichaHorizontal(fichaColocada, fila, columna);
 
-                            jugador.getFichas().remove(fichaColocada); 
-                            tableroPanel.repaint();
+                                jugador.getFichas().remove(fichaColocada);
+                                tableroPanel.repaint();
 
-                            for (Component component : fichasJugadorPanel.getComponents()) {
-                                if (component instanceof JLabel) {
-                                    JLabel label = (JLabel) component;
-                                    if (fichaColocada.getRutaImagen().equals(((ImageIcon) label.getIcon()).getDescription())) {
-                                        fichasJugadorPanel.remove(label);
-                                        break;
+                                for (Component component : fichasJugadorPanel.getComponents()) {
+                                    if (component instanceof JLabel) {
+                                        JLabel label = (JLabel) component;
+                                        if (fichaColocada.getRutaImagen().equals(((ImageIcon) label.getIcon()).getDescription())) {
+                                            fichasJugadorPanel.remove(label);
+                                            break;
+                                        }
                                     }
                                 }
+                                fichasJugadorPanel.revalidate();
+                                fichasJugadorPanel.repaint();
+                                break; // Rompe el ciclo si se ha colocado la ficha
                             }
-                            fichasJugadorPanel.revalidate();
-                            fichasJugadorPanel.repaint(); 
                         }
                     }
                     dtde.dropComplete(true);
@@ -120,7 +139,8 @@ public class TableroView extends JFrame {
                 }
             }
 
-            private Ficha encontrarFichaPorIcono(ImageIcon icon) {
+            // Método actualizado para buscar la ficha en el jugador específico
+            private Ficha encontrarFichaPorIcono(ImageIcon icon, Jugador jugador) {
                 for (Ficha ficha : jugador.getFichas()) {
                     if (new ImageIcon(ficha.getRutaImagen()).getImage().equals(icon.getImage())) {
                         return ficha;
@@ -136,8 +156,8 @@ public class TableroView extends JFrame {
         private int[][] tablero;
 
         public TableroPanel(Array array) {
-            this.tablero = array.obtenerTablero(); 
-            setPreferredSize(new Dimension(800, 800)); 
+            this.tablero = array.obtenerTablero();
+            setPreferredSize(new Dimension(800, 800));
         }
 
         @Override
@@ -155,14 +175,17 @@ public class TableroView extends JFrame {
     }
 
     class FichaTransferHandler extends TransferHandler {
+
         private Ficha ficha;
         private JLabel fichaLabel;
         private JPanel fichasJugadorPanel;
+        private Jugador jugador; // Guardar referencia al jugador
 
-        public FichaTransferHandler(Ficha ficha, JLabel fichaLabel, JPanel fichasJugadorPanel) {
+        public FichaTransferHandler(Ficha ficha, JLabel fichaLabel, JPanel fichasJugadorPanel, Jugador jugador) {
             this.ficha = ficha;
             this.fichaLabel = fichaLabel;
             this.fichasJugadorPanel = fichasJugadorPanel;
+            this.jugador = jugador; // Inicializar el jugador
         }
 
         @Override
@@ -190,7 +213,7 @@ public class TableroView extends JFrame {
 
         @Override
         public int getSourceActions(JComponent c) {
-            return MOVE; 
+            return MOVE;
         }
     }
 }

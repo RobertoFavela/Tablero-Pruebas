@@ -33,7 +33,7 @@ public class Pozo {
     private void crearFichasPozo() {
         for (int i = 0; i <= 6; i++) {
             for (int j = i; j <= 6; j++) {
-                String rutaImagen = String.format("C:\\Users\\favel\\Documents\\NetBeansProjects\\Prueba-tablero\\src\\img\\ficha%d_%d.png", i, j);
+                String rutaImagen = String.format("C:\\Users\\favel\\Documents\\Tablero-Pruebas\\Prueba-tablero\\src\\img\\ficha%d_%d.png", i, j);
                 Ficha ficha = new Ficha(i, j, rutaImagen);
                 fichas.add(ficha);
             }
