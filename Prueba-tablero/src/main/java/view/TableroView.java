@@ -66,7 +66,12 @@ public class TableroView extends JFrame {
         for (Jugador jugador : jugadores) {
             for (Ficha ficha : jugador.getFichas()) {
                 String rutaImagen = String.format(
-                        "C:\\Users\\favel\\OneDrive\\Documentos\\ITSON\\Tablero-Pruebas\\Prueba-tablero\\src\\img\\ficha%d_%d.png",
+                        
+                        //En mi compu
+                        //"C:\\Users\\favel\\OneDrive\\Documentos\\ITSON\\Tablero-Pruebas\\Prueba-tablero\\src\\img\\ficha%d_%d.png",
+                        
+                        //En mi laptop
+                        "C:\\Users\\favel\\Documents\\NetBeansProjects\\Tablero-Pruebas\\Prueba-tablero\\src\\img\\\\ficha%d_%d.png",
                         ficha.getLado1(), ficha.getLado2()
                 );
                 ImageIcon icono = new ImageIcon(rutaImagen);
