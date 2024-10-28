@@ -1,9 +1,9 @@
-Logica\ControlJuego.class
-view\TableroView.class
-Logica\Array.class
 Logica\Jugador.class
 Logica\Pozo.class
-view\TableroView$TableroPanel.class
 Logica\Ficha.class
 main\Main.class
 view\TableroView$1.class
+view\TableroView.class
+Logica\Array.class
+Logica\ControlJuego.class
+view\TableroView$TableroPanel.class

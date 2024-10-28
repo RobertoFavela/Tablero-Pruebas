@@ -12,8 +12,9 @@ import java.util.List;
 import view.TableroView;
 
 public class Main {
+     public static Pozo pozo;
     public static void main(String[] args) {
-        Pozo pozo = new Pozo(14); 
+           pozo = new Pozo(7); 
 
         List<Jugador> Jugadores = new ArrayList<>();
         Jugador jugador = new Jugador("Favela");
@@ -22,8 +23,7 @@ public class Main {
 
         Jugadores.add(jugador);
         Array array = new Array(); 
-
-        TableroView view = new TableroView(array, Jugadores); 
+        TableroView view = new TableroView(array, jugador); 
         view.setVisible(true); 
     }
 }

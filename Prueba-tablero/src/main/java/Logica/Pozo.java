@@ -4,6 +4,7 @@
  */
 package Logica;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +14,7 @@ import java.util.Random;
  * @author favel
  */
 public class Pozo {
-    private final List<Ficha> fichas ;
+    private final ArrayList<Ficha> fichas ;
     private int numeroFichasIniciales;
     
     /**
@@ -32,12 +33,17 @@ public class Pozo {
 private void crearFichasPozo() {
     for (int i = 0; i <= 6; i++) {
         for (int j = i; j <= 6; j++) {
-            Ficha ficha = new Ficha(i, j);
-            System.out.println(ficha);
-            fichas.add(ficha);
+            String rutaImagen = String.format("/imgPartidaFichas/ficha%d_%d.png", i, j);
+            URL ruta = getClass().getResource(rutaImagen);
+            if (ruta != null) {
+                Ficha ficha = new Ficha(i, j, ruta.toString());
+                fichas.add(ficha);
+            } else {
+                System.out.println("Imagen no encontrada para: " + rutaImagen);
+            }
         }
     }
-}
+   }
 
     /**
      * MMetodo que retorna una ficha al azar y elimina la ficha del pozo

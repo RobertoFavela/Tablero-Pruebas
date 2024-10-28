@@ -4,6 +4,9 @@
  */
 package Logica;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author favel
@@ -16,7 +19,7 @@ public class Array {
     private int extremo2Columna, extremo2Fila;
 
     public Array() {
-        tablero = new int[10][10];
+        tablero = new int[30][30];
         reiniciarTablero();
         tablero[4][4] = 6;
         extremoIzquierdo = 6;
@@ -30,7 +33,22 @@ public class Array {
     public boolean estaVacio(int fila, int columna) {
         return tablero[fila][columna] == -1;
     }
-
+   /**
+     * Verifica si el jugador tiene alguna ficha que coincida con los extremos.
+     * Si no tiene fichas válidas, muestra un mensaje de aviso.
+     * @param fichasJugador Lista de fichas del jugador.
+     * @return true si el jugador tiene fichas válidas, false en caso contrario.
+     */
+    public boolean verificarPosiblesMovimientos(List<Ficha> fichasJugador) {
+        for (Ficha ficha : fichasJugador) {
+            
+            if (ficha.getLado1() == extremoIzquierdo || ficha.getLado2() == extremoIzquierdo ||
+                ficha.getLado1() == extremoDerecha || ficha.getLado2() == extremoDerecha) {
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean colocarFichaExtremoIzquierdo(Ficha ficha) {
         //Colocar la ficha si es mula
         if (ficha.esMula()) {
