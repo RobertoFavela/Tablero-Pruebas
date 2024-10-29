@@ -3,7 +3,9 @@ Logica\Pozo.class
 Logica\Ficha.class
 main\Main.class
 view\TableroView$1.class
+view\TableroModel.class
 view\TableroView.class
 Logica\Array.class
+view\TableroController.class
 Logica\ControlJuego.class
 view\TableroView$TableroPanel.class
