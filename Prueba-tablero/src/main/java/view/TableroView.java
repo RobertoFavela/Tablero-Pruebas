@@ -1,31 +1,16 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.net.URL;
+import javax.swing.*;
 import java.util.List;
 
 import Logica.Array;
-import Logica.ControlJuego;
 import Logica.Ficha;
 import Logica.Jugador;
-import java.awt.GridLayout;
-import java.net.URL;
-import java.util.ArrayList;
-import javax.swing.BoxLayout;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import static main.Main.pozo;
 
 public class TableroView extends JFrame {
@@ -35,9 +20,9 @@ public class TableroView extends JFrame {
       private Ficha fichaSeleccionada = null;
       private JPanel botonesPanel;
       private JPanel fichasJugadorPanel;
-      private boolean movimiento = false;
-      private int contadorClics = 0;
       private TableroPanel tableroPanel;
+      private int contadorClics = 0;
+      private boolean movimiento = false;
 
       public TableroView(Array array, Jugador jugador) {
             this.array = array;
@@ -81,6 +66,28 @@ public class TableroView extends JFrame {
             tableroPanel.repaint();
       }
 
+      private void iniciarHiloVerificacionFichasDisponibles() {
+            Thread verificador = new Thread(() -> {
+                  while (true) {
+                        try {
+                              Thread.sleep(1000);
+
+                              movimiento = array.verificarPosiblesMovimientos(jugador.getFichas());
+                              System.out.println("Movimiento posible: " + movimiento);
+
+                              if (!movimiento) {
+                                    SwingUtilities.invokeLater(this::jalarFichasPozo);
+                                    break;
+                              }
+                        } catch (InterruptedException e) {
+                              e.printStackTrace();
+                        }
+                  }
+            });
+            fichasJugadorPanel.repaint();
+            verificador.start();
+      }
+
       private void agregarFichaAlPanel(Ficha ficha) {
             String rutaImagen = String.format("/imgPartidaFichas/ficha%d_%d.png", ficha.getLado1(), ficha.getLado2());
             URL recurso = getClass().getResource(rutaImagen);
@@ -103,28 +110,6 @@ public class TableroView extends JFrame {
             } else {
                   System.err.println("Imagen no encontrada para: " + rutaImagen);
             }
-      }
-
-      private void iniciarHiloVerificacionFichasDisponibles() {
-            Thread verificador = new Thread(() -> {
-                  while (true) {
-                        try {
-                              Thread.sleep(1000);
-
-                              movimiento = array.verificarPosiblesMovimientos(jugador.getFichas());
-                              System.out.println("Movimiento posible: " + movimiento);
-
-                              if (!movimiento) {
-                                    SwingUtilities.invokeLater(this::jalarFichasPozo);
-                                    break;
-                              }
-                        } catch (InterruptedException e) {
-                              e.printStackTrace();
-                        }
-                  }
-            });
-            fichasJugadorPanel.repaint();
-            verificador.start();
       }
 
       private void jalarFichasPozo() {
@@ -179,14 +164,13 @@ public class TableroView extends JFrame {
       private void mostrarBotonesSeleccion(JButton fichaLabel) {
             botonesPanel.removeAll();
 
-            // Botón para extremo izquierdo
+            // Botones para los extremos
             JButton botonExtremo1 = new JButton("Extremo 1");
-            botonExtremo1.addActionListener(e -> mostrarBotonesDireccion(true, fichaLabel));
+            botonExtremo1.addActionListener(e -> mostrarBotonesDireccion(true));
             botonesPanel.add(botonExtremo1);
 
-            // Botón para extremo derecho
             JButton botonExtremo2 = new JButton("Extremo 2");
-            botonExtremo2.addActionListener(e -> mostrarBotonesDireccion(false, fichaLabel));
+            botonExtremo2.addActionListener(e -> mostrarBotonesDireccion(false));
             botonesPanel.add(botonExtremo2);
 
             botonesPanel.setVisible(true);
@@ -194,16 +178,14 @@ public class TableroView extends JFrame {
             botonesPanel.repaint();
       }
 
-      private void mostrarBotonesDireccion(boolean extremoIzquierdo, JButton fichaLabel) {
+      private void mostrarBotonesDireccion(boolean extremoIzquierdo) {
             botonesPanel.removeAll();
 
-            // Crear los botones de dirección
+            // Botones para seleccionar dirección
             String[] direcciones = {"Arriba", "Abajo", "Izquierda", "Derecha"};
             for (String direccion : direcciones) {
                   JButton botonDireccion = new JButton(direccion);
-                  botonDireccion.addActionListener(e
-                          -> colocarFichaConDireccion(extremoIzquierdo, direccion, fichaLabel)
-                  );
+                  botonDireccion.addActionListener(e -> colocarFicha(extremoIzquierdo, direccion));
                   botonesPanel.add(botonDireccion);
             }
 
@@ -212,36 +194,46 @@ public class TableroView extends JFrame {
             botonesPanel.repaint();
       }
 
-      private void colocarFichaConDireccion(boolean extremoIzquierdo, String direccion, JButton fichaLabel) {
-            System.out.println("Intentando colocar ficha en el " + (extremoIzquierdo ? "extremo izquierdo" : "extremo derecho")
-                    + " en dirección: " + direccion);
+      private void colocarFicha(boolean extremoIzquierdo, String direccion) {
+            if (fichaSeleccionada != null) {
+                  boolean colocada;
+                  if (extremoIzquierdo) {
+                        colocada = array.colocarFichaExtremoIzquierdo(fichaSeleccionada, direccion);
+                  } else {
+                        colocada = array.colocarFichaExtremoDerecho(fichaSeleccionada, direccion);
+                  }
 
-            boolean colocada = extremoIzquierdo
-                    ? array.colocarFichaExtremoIzquierdo(fichaSeleccionada, direccion)
-                    : array.colocarFichaExtremoDerecho(fichaSeleccionada, direccion);
+                  if (colocada) {
+                        System.out.println("Ficha colocada correctamente.");
 
-            if (colocada) {
-                  System.out.println("Ficha colocada correctamente.");
-                  jugador.eliminarFicha(fichaSeleccionada);
-                  fichasJugadorPanel.remove(fichaLabel);
-                  botonesPanel.setVisible(false);
-                  fichasJugadorPanel.revalidate();
-                  fichasJugadorPanel.repaint();
-                  repaint();
-            } else {
-                  System.out.println("No se pudo colocar la ficha en la dirección: " + direccion);
-                  JOptionPane.showMessageDialog(this, "No se pudo colocar la ficha.");
+                        // Eliminar ficha de la lista del jugador
+                        jugador.getFichas().remove(fichaSeleccionada);
+
+                        // Limpiar la selección
+                        fichaSeleccionada = null;
+
+                        // Actualizar la interfaz gráfica
+                        fichasJugadorPanel.removeAll();
+                        for (Ficha ficha : jugador.getFichas()) {
+                              agregarFichaAlPanel(ficha);  // Volver a agregar las fichas restantes al panel
+                        }
+
+                        fichasJugadorPanel.revalidate();
+                        fichasJugadorPanel.repaint();
+                        tableroPanel.repaint();  // Asegurarse de repintar el tablero
+                  } else {
+                        System.out.println("No se pudo colocar la ficha en la dirección: " + direccion);
+                        JOptionPane.showMessageDialog(this, "No se pudo colocar la ficha.");
+                  }
             }
       }
 
       public class TableroPanel extends JPanel {
 
             private final int[][] tablero;
-            private final List<Ficha> fichasEnTablero;
 
             public TableroPanel(Array array) {
                   this.tablero = array.obtenerTablero();
-                  this.fichasEnTablero = new ArrayList<>();
                   setPreferredSize(new Dimension(800, 800));
             }
 
@@ -252,20 +244,13 @@ public class TableroView extends JFrame {
 
                   for (int i = 0; i < tablero.length; i++) {
                         for (int j = 0; j < tablero[i].length; j++) {
-                              if (tablero[i][j] != -1) {
-                                    g.setColor(Color.GRAY);
-                                    g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-                              }
+                              g.setColor(tablero[i][j] != -1 ? Color.GRAY : Color.WHITE);
+                              g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
                               g.setColor(Color.BLACK);
                               g.drawRect(j * cellSize, i * cellSize, cellSize, cellSize);
                               g.drawString(String.valueOf(tablero[i][j]), j * cellSize + cellSize / 4, i * cellSize + cellSize / 2);
                         }
                   }
-
-            }
-
-            public void agregarFichaAlTablero(Ficha ficha) {
-                  fichasEnTablero.add(ficha); // Agregar ficha a la lista del tablero
             }
       }
 }
