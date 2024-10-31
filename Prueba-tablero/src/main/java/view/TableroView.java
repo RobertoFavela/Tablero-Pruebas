@@ -197,11 +197,9 @@ public class TableroView extends JFrame {
       private void colocarFicha(boolean extremoIzquierdo, String direccion) {
             if (fichaSeleccionada != null) {
                   boolean colocada;
-                  if (extremoIzquierdo) {
-                        colocada = array.colocarFichaExtremoIzquierdo(fichaSeleccionada, direccion);
-                  } else {
-                        colocada = array.colocarFichaExtremoDerecho(fichaSeleccionada, direccion);
-                  }
+                  
+                  colocada = array.colocarFicha(fichaSeleccionada, extremoIzquierdo, direccion);
+                  
 
                   if (colocada) {
                         System.out.println("Ficha colocada correctamente.");
