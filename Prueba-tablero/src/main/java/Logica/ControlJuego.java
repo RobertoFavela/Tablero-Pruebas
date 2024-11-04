@@ -6,15 +6,15 @@
 package Logica;
 
 import Dominio.Jugador;
-import Dominio.Array;
+import Dominio.Arreglo;
 import java.util.List;
 
 public class ControlJuego {
 
     private List<Jugador> jugadores;
-    private Array tablero;
+    private Arreglo tablero;
 
-    public ControlJuego(List<Jugador> jugadores, Array tablero) {
+    public ControlJuego(List<Jugador> jugadores, Arreglo tablero) {
         this.jugadores = jugadores;
         this.tablero = tablero;
     }

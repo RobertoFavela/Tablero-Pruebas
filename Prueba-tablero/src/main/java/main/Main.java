@@ -4,12 +4,13 @@
  */
 package main;
 
-import Dominio.Array;
+import Dominio.Arreglo;
 import Dominio.Jugador;
 import Dominio.Pozo; // Asegúrate de importar la clase Array
+import Logica.LogicaArreglo;
 import java.util.ArrayList;
 import java.util.List;
-import view.TableroView;
+import MVC.TableroView;
 
 public class Main {
      public static Pozo pozo;
@@ -22,7 +23,8 @@ public class Main {
         jugador.agregarFichas(pozo.repartirFichas());
 
         Jugadores.add(jugador);
-        Array array = new Array(); 
+        Arreglo arreglo = new Arreglo();
+        LogicaArreglo array = new LogicaArreglo(arreglo); 
         TableroView view = new TableroView(array, jugador); 
         view.setVisible(true); 
     }

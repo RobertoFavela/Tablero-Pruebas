@@ -1,4 +1,4 @@
-package view;
+package MVC;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,14 +7,15 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import javax.swing.*;
 import java.util.List;
-import Dominio.Array;
+import Dominio.Arreglo;
 import Dominio.Ficha;
 import Dominio.Jugador;
+import Logica.LogicaArreglo;
 import static main.Main.pozo;
 
 public class TableroView extends JFrame {
 
-      private Array array;
+     private LogicaArreglo array;
       private Jugador jugador;
       private Ficha fichaSeleccionada = null;
       private JPanel botonesPanel;
@@ -23,7 +24,7 @@ public class TableroView extends JFrame {
       private int contadorClics = 0;
       private boolean movimiento = false;
 
-      public TableroView(Array array, Jugador jugador) {
+      public TableroView(LogicaArreglo array, Jugador jugador) {
             this.array = array;
             this.jugador = jugador;
 
@@ -225,7 +226,7 @@ public class TableroView extends JFrame {
 
             private final int[][] tablero;
 
-            public TableroPanel(Array array) {
+            public TableroPanel(LogicaArreglo array) {
                   this.tablero = array.obtenerTablero();
                   setPreferredSize(new Dimension(800, 800));
             }
