@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Logica;
+package Dominio;
 
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -17,9 +17,10 @@ public class Array {
      private int extremoIzquierdo, extremoDerecha;
      private int extremo1Columna, extremo1Fila;
      private int extremo2Columna, extremo2Fila;
+     
 
      public Array() {
-          tablero = new int[15][15];
+          tablero = new int[17][29];
           reiniciarTablero();
           tablero[7][7] = 6;
           extremoIzquierdo = 6;

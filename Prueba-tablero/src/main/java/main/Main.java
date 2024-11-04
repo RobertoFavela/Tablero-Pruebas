@@ -4,9 +4,9 @@
  */
 package main;
 
-import Logica.Array;
-import Logica.Jugador;
-import Logica.Pozo; // Asegúrate de importar la clase Array
+import Dominio.Array;
+import Dominio.Jugador;
+import Dominio.Pozo; // Asegúrate de importar la clase Array
 import java.util.ArrayList;
 import java.util.List;
 import view.TableroView;

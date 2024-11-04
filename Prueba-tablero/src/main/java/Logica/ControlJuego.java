@@ -5,6 +5,8 @@
  */
 package Logica;
 
+import Dominio.Jugador;
+import Dominio.Array;
 import java.util.List;
 
 public class ControlJuego {

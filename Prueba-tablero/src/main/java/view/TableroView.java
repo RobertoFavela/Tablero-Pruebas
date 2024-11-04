@@ -7,10 +7,9 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import javax.swing.*;
 import java.util.List;
-
-import Logica.Array;
-import Logica.Ficha;
-import Logica.Jugador;
+import Dominio.Array;
+import Dominio.Ficha;
+import Dominio.Jugador;
 import static main.Main.pozo;
 
 public class TableroView extends JFrame {
@@ -73,7 +72,6 @@ public class TableroView extends JFrame {
                               Thread.sleep(1000);
 
                               movimiento = array.verificarPosiblesMovimientos(jugador.getFichas());
-                              System.out.println("Movimiento posible: " + movimiento);
 
                               if (!movimiento) {
                                     SwingUtilities.invokeLater(this::jalarFichasPozo);
@@ -204,21 +202,18 @@ public class TableroView extends JFrame {
                   if (colocada) {
                         System.out.println("Ficha colocada correctamente.");
 
-                        // Eliminar ficha de la lista del jugador
                         jugador.getFichas().remove(fichaSeleccionada);
 
-                        // Limpiar la selección
                         fichaSeleccionada = null;
 
-                        // Actualizar la interfaz gráfica
                         fichasJugadorPanel.removeAll();
                         for (Ficha ficha : jugador.getFichas()) {
-                              agregarFichaAlPanel(ficha);  // Volver a agregar las fichas restantes al panel
+                              agregarFichaAlPanel(ficha); 
                         }
 
                         fichasJugadorPanel.revalidate();
                         fichasJugadorPanel.repaint();
-                        tableroPanel.repaint();  // Asegurarse de repintar el tablero
+                        tableroPanel.repaint();  
                   } else {
                         System.out.println("No se pudo colocar la ficha en la dirección: " + direccion);
                         JOptionPane.showMessageDialog(this, "No se pudo colocar la ficha.");
