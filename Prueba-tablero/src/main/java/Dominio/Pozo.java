@@ -36,14 +36,10 @@ public class Pozo {
       private void crearFichasPozo() {
             for (int i = 0; i <= 6; i++) {
                   for (int j = i; j <= 6; j++) {
-                        String rutaImagen = String.format("/imgPartidaFichas/ficha%d_%d.png", i, j);
-                        URL ruta = getClass().getResource(rutaImagen);
-                        if (ruta != null) {
-                              Ficha ficha = new Ficha(i, j, ruta.toString());
+                        
+                              Ficha ficha = new Ficha(i, j);
                               fichas.add(ficha);
-                        } else {
-                              System.out.println("Imagen no encontrada para: " + rutaImagen);
-                        }
+                        
                   }
             }
       }
