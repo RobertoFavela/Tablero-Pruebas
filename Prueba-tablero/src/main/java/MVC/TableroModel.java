@@ -4,10 +4,8 @@
  */
 package MVC;
 
-/**
- *
- * @author JOSUE GOMEZ
- */
 public class TableroModel {
-    
 }
+
+
+

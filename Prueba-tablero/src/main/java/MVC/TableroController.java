@@ -4,10 +4,11 @@
  */
 package MVC;
 
-/**
- *
- * @author JOSUE GOMEZ
- */
+import Dominio.Ficha;
+
 public class TableroController {
     
 }
+
+
+
