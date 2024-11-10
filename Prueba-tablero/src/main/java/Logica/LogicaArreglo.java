@@ -12,8 +12,8 @@ public class LogicaArreglo {
 
      private Arreglo arreglo;
 
-     public LogicaArreglo(Arreglo arreglo) {
-          this.arreglo = arreglo;
+     public LogicaArreglo() {
+          this.arreglo = Arreglo.getInstance();
      }
 
      public int[][] obtenerTablero() {

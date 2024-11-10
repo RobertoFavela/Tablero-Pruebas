@@ -17,8 +17,9 @@ public class Arreglo {
      private int extremoIzquierdo, extremoDerecha;
      private int extremo1Columna, extremo1Fila;
      private int extremo2Columna, extremo2Fila;
-     
 
+     private static Arreglo instanciaUnica;
+     
      public Arreglo() {
           tablero = new int[15][30];
           reiniciarTablero();
@@ -30,6 +31,13 @@ public class Arreglo {
           extremo2Columna = 7;
           extremo2Fila = 7;
      }
+     
+     public static Arreglo getInstance() {
+        if (instanciaUnica == null) {
+            instanciaUnica = new Arreglo();
+        }
+        return instanciaUnica;
+    }
     
      public void reiniciarTablero() {
           for (int i = 0; i < tablero.length; i++) {
